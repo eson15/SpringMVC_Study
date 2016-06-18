@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- setting配置根据需要再添加 -->
+	<!-- 配置别名 -->
+	<typeAliases>
+		<package name="ssm.po"/>
+	</typeAliases>
+	
+	<!-- mapper这里不需要配置了，因为跟spring整合后，在spring那边会进行mapper的扫描 
+		但必须遵循：mapper.xml和mapper.java必须同名且在一个目录
+	-->
+</configuration>
