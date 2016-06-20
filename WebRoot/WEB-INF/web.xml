@@ -1,43 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
-  <display-name>SpringMVC_Study</display-name>
-  
-  <!-- 加载spring容器 -->
-  <context-param>
-  	<param-name>contextConfigLocation</param-name>
-  	<param-value>classpath:spring/applicationContext-*.xml</param-value>
-  </context-param>
-  <listener>
-  	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  </listener>
-  
-  <welcome-file-list> 
-    <welcome-file>index.jsp</welcome-file>
-  </welcome-file-list>
-  
-  <!-- 配置springmvc的前端控制器DispatcherServlet（相当于一个servlet） -->
-  <servlet>
-  	<servlet-name>springmvc</servlet-name>
-  	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-  	
-  	<!-- contextConfigLocation是配置springmvc加载的配置文件（配置处理器映射器、适配器等） 
-  		如果不配置contextConfigLocation，则默认加载的是/WEB-INF/springmvc-servlet.xml
-  	-->
-  	<init-param>
-  		<param-name>contextConfigLocation</param-name>
-  		<param-value>classpath:springmvc.xml</param-value>
-  	</init-param>
-  </servlet>
-  
-  <servlet-mapping>
-  	<servlet-name>springmvc</servlet-name>
-  	<!-- 
-  		第一种：*.action，可以访问以.action结尾的地址，由DispatcherServlet进行解析
-  		第二种：/，所有访问的地址都由DispatcherServlet进行解析，对应静态文件的解析需要配置不让DispatcherServlet进行解析
-  		第三种：/*，这样配置是不对的，使用这种配置，最重要转发到一个jsp页面时，仍然会由DispatcherServlet解析jsp地址，
-  			不能根据jsp页面找打Handler，会报错
-  	 -->
-  	<url-pattern>*.action</url-pattern>
-  </servlet-mapping>
-  
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+	<display-name>SpringMVC_Study</display-name>
+
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+	
+	<!-- 加载spring容器 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring/applicationContext-*.xml</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- 过滤器解决post乱码问题 -->
+	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>utf-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
+
+	<!-- 配置springmvc的前端控制器DispatcherServlet（相当于一个servlet） -->
+	<servlet>
+		<servlet-name>springmvc</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+
+		<!-- contextConfigLocation是配置springmvc加载的配置文件（配置处理器映射器、适配器等） 如果不配置contextConfigLocation，则默认加载的是/WEB-INF/springmvc-servlet.xml -->
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:spring/springmvc.xml</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>springmvc</servlet-name>
+		<!-- 第一种：*.action，可以访问以.action结尾的地址，由DispatcherServlet进行解析 第二种：/，所有访问的地址都由DispatcherServlet进行解析，对应静态文件的解析需要配置不让DispatcherServlet进行解析 
+			第三种：/*，这样配置是不对的，使用这种配置，最重要转发到一个jsp页面时，仍然会由DispatcherServlet解析jsp地址， 不能根据jsp页面找打Handler，会报错 -->
+		<url-pattern>*.action</url-pattern>
+	</servlet-mapping>
+
 </web-app>

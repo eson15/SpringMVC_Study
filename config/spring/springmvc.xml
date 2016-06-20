@@ -68,7 +68,7 @@
 	如果使用mvc:annotation-driven不用配置上边的RequestMappingHandlerMapping和RequestMappingHandlerAdapter
 	实际开发时使用mvc:annotation-driven
 	 -->
-	<mvc:annotation-driven></mvc:annotation-driven>
+	<mvc:annotation-driven conversion-service="conversionService"></mvc:annotation-driven>
 	<!-- 也不用配置具体的Controller了，直接使用这个进行扫描包即可，也可以扫描service -->
 	<context:component-scan base-package="ssm.controller"></context:component-scan>
 	
@@ -76,4 +76,15 @@
 		进行jsp解析，默认使用jstl标签，classpath下得有jstl的包
 	-->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" />
+	
+	<!-- 自定义参数绑定 -->
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<!-- 转换器 -->
+		<property name="converters">
+			<list>
+				<!-- 日期类型转换 -->
+				<bean class="ssm.controller.converter.CustomDateConverter"/>
+			</list>
+		</property>
+	</bean>
 </beans>
