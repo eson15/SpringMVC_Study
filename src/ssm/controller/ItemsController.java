@@ -7,10 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import ssm.controller.validation.ValidGroup1;
 import ssm.po.ItemsCustom;
 import ssm.po.ItemsQueryVo;
 import ssm.service.ItemsService;
@@ -50,14 +54,30 @@ public class ItemsController {
 	}
 
 	@RequestMapping("/editItemsSubmit")
-	public String editItemsSubmit(HttpServletRequest request, Integer id,
-			ItemsCustom itemsCustom) throws Exception {
+	public String editItemsSubmit(Model model, HttpServletRequest request, Integer id,
+			@Validated(value={ValidGroup1.class}) ItemsCustom itemsCustom, BindingResult bindingResult) throws Exception {
 
+		//获取校验错误信息
+		if(bindingResult.hasErrors()) {
+			//输出错误信息
+			List<ObjectError> allErrors = bindingResult.getAllErrors();
+			for(ObjectError objectError : allErrors) {
+				//System.out.println(objectError.getDefaultMessage());
+				//原来是上面这句，但是由于properties文件默认无法输入中文，所以我把properties文件改成了utf-8编码，
+				//但是这样的话读取出来就是乱码了，所以我先用iso打乱，再用utf-8生成，即可解决乱码问题
+				System.out.println(new String(objectError.getDefaultMessage().getBytes("ISO-8859-1"),"UTF-8"));
+			}
+			//将错误信息传到页面
+			model.addAttribute("allErrors", allErrors);
+			return "/WEB-INF/jsp/items/editItems.jsp";
+		}
+		
 		// 调用service更新商品信息，页面需要将商品信息传到此方法
 		itemsService.updateItems(id, itemsCustom);
-
+				
 		// return "redirect:queryItems.action";
 		// return "forward:queryItems.action";
+		
 		return "/WEB-INF/jsp/success.jsp";
 	}
 
