@@ -35,8 +35,10 @@
 				<td><c:if test="${itemsCustom.pic !=null}">
 						<img src="/file/${itemsCustom.pic}" width=100 height=100 />
 						<br />
-					</c:if> <input type="file" name="items_pic"
-					accept="/file/${itemsCustom.pic}" /></td>
+					</c:if> 
+					<input type="file" name="items_pic"/>
+					<input type="file" name="items_pic"/>
+				</td>
 			</tr>
 			<tr>
 				<td>商品简介</td>

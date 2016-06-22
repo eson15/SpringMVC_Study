@@ -63,7 +63,8 @@ public class ItemsController {
 	public String editItemsSubmit(Model model, HttpServletRequest request,
 			Integer id,
 			@Validated(value = { ValidGroup1.class }) ItemsCustom itemsCustom,
-			BindingResult bindingResult, MultipartFile items_pic)
+			BindingResult bindingResult, 
+			@RequestParam MultipartFile[] items_pic)
 			throws Exception {
 
 		// 获取校验错误信息
@@ -80,8 +81,9 @@ public class ItemsController {
 			// 将错误信息传到页面
 			model.addAttribute("allErrors", allErrors);
 		}
-
-		// 处理上传的图片
+		
+/*
+		// 处理上传的图片，单个图片
 		// 原始名称
 		String originalFileName = items_pic.getOriginalFilename();
 		// 上传图片
@@ -103,9 +105,31 @@ public class ItemsController {
 			ItemsCustom temp = itemsService.findItemsById(itemsCustom.getId());
 			itemsCustom.setPic(temp.getPic());
 		}
-
 		// 调用service更新商品信息，页面需要将商品信息传到此方法
 		itemsService.updateItems(id, itemsCustom);
+*/
+		//多个图片，不存数据库了，在此打印一下即可
+		for(MultipartFile myfile : items_pic) {
+			if(myfile.isEmpty()){  
+                System.out.println("文件未上传");  
+            }else{  
+                System.out.println("文件长度: " + myfile.getSize());  
+                System.out.println("文件类型: " + myfile.getContentType());  
+                System.out.println("文件名称: " + myfile.getName());  
+                System.out.println("文件原名: " + myfile.getOriginalFilename());  
+                System.out.println("========================================");  
+
+                //写入磁盘
+                String originalFileName = myfile.getOriginalFilename();
+                String pic_path = "E:\\github\\develop\\upload\\temp\\";
+                String newFileName = UUID.randomUUID()
+    					+ originalFileName.substring(originalFileName
+    							.lastIndexOf("."));
+                File newFile = new File(pic_path + newFileName);
+                myfile.transferTo(newFile);
+            }  
+		}	
+		
 
 		// return "redirect:queryItems.action";
 		// return "forward:queryItems.action";

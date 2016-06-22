@@ -127,9 +127,10 @@
 	只要实现HandlerExceptionResolver接口就是全局异常处理器 -->
 	<bean class="ssm.exception.CustomExceptionResolver"></bean>
 	 
-	<!-- 文件上传 -->
+	<!-- 文件上传,需要配置MultipartResolver处理器 -->
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<!-- 设置船上文件的最大尺寸为5MB -->
 		<property name="maxUploadSize" value="5242880"/>
+		<property name="defaultEncoding" value="utf-8"/>   
 	</bean>
 </beans>
