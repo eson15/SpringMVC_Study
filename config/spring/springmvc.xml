@@ -110,4 +110,21 @@
 		<!-- 对资源文件内容缓存时间，单位秒 -->
 		<property name="cacheSeconds" value="120"/>
 	</bean>
+	
+	<!-- springmvc提供的简单异常处理器 -->
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="defaultErrorView" value="/WEB-INF/jsp/error.jsp"/>
+		<property name="exceptionAttribute" value="ex"/>
+		<property name="exceptionMappings">
+			<props>
+				<prop key="ssm.exception.CustomException">/WEB-INF/jsp/custom_error.jsp</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- 自定义的全局异常处理器
+	只要实现HandlerExceptionResolver接口就是全局异常处理器
+	<bean class="ssm.exception.CustomExceptionResolver"></bean>
+	 -->
+	
 </beans>

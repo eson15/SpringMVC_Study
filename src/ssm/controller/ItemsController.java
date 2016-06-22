@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import ssm.controller.validation.ValidGroup1;
+import ssm.exception.CustomException;
 import ssm.po.ItemsCustom;
 import ssm.po.ItemsQueryVo;
 import ssm.service.ItemsService;
@@ -46,10 +47,12 @@ public class ItemsController {
 		// 根据id查询对应的Items
 		ItemsCustom itemsCustom = itemsService.findItemsById(items_id);
 
+		if(itemsCustom == null) {
+			throw new CustomException("修改的商品信息不存在！");
+		}
+		
 		model.addAttribute("itemsCustom", itemsCustom);
 
-		// 通过形参中的model将model数据传到页面
-		// 相当于modelAndView.addObject方法
 		return "/WEB-INF/jsp/items/editItems.jsp";
 	}
 

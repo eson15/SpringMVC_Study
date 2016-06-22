@@ -36,9 +36,12 @@ public class ItemsServiceImpl implements ItemsService {
 		// 这里根据实际情况，对商品信息进行业务处理
 		// ....
 		// 返回扩展类ItemsCustom
-		ItemsCustom itemsCustom = new ItemsCustom();
-		// 将items的属性拷贝到itemsCustom
-		BeanUtils.copyProperties(items, itemsCustom);
+		ItemsCustom itemsCustom = null;
+		if(items != null) {
+			itemsCustom = new ItemsCustom();
+			// 将items的属性拷贝到itemsCustom
+			BeanUtils.copyProperties(items, itemsCustom);
+		}
 
 		return itemsCustom;
 	}
