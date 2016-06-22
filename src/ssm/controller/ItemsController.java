@@ -1,6 +1,8 @@
 package ssm.controller;
 
+import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,6 +14,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import ssm.controller.validation.ValidGroup1;
@@ -47,40 +50,66 @@ public class ItemsController {
 		// 根据id查询对应的Items
 		ItemsCustom itemsCustom = itemsService.findItemsById(items_id);
 
-		if(itemsCustom == null) {
+		if (itemsCustom == null) {
 			throw new CustomException("修改的商品信息不存在！");
 		}
-		
+
 		model.addAttribute("itemsCustom", itemsCustom);
 
 		return "/WEB-INF/jsp/items/editItems.jsp";
 	}
 
 	@RequestMapping("/editItemsSubmit")
-	public String editItemsSubmit(Model model, HttpServletRequest request, Integer id,
-			@Validated(value={ValidGroup1.class}) ItemsCustom itemsCustom, BindingResult bindingResult) throws Exception {
+	public String editItemsSubmit(Model model, HttpServletRequest request,
+			Integer id,
+			@Validated(value = { ValidGroup1.class }) ItemsCustom itemsCustom,
+			BindingResult bindingResult, MultipartFile items_pic)
+			throws Exception {
 
-		//获取校验错误信息
-		if(bindingResult.hasErrors()) {
-			//输出错误信息
+		// 获取校验错误信息
+		if (bindingResult.hasErrors()) {
+			// 输出错误信息
 			List<ObjectError> allErrors = bindingResult.getAllErrors();
-			for(ObjectError objectError : allErrors) {
-				//System.out.println(objectError.getDefaultMessage());
-				//原来是上面这句，但是由于properties文件默认无法输入中文，所以我把properties文件改成了utf-8编码，
-				//但是这样的话读取出来就是乱码了，所以我先用iso打乱，再用utf-8生成，即可解决乱码问题
-				System.out.println(new String(objectError.getDefaultMessage().getBytes("ISO-8859-1"),"UTF-8"));
+			for (ObjectError objectError : allErrors) {
+				// System.out.println(objectError.getDefaultMessage());
+				// 原来是上面这句，但是由于properties文件默认无法输入中文，所以我把properties文件改成了utf-8编码，
+				// 但是这样的话读取出来就是乱码了，所以我先用iso打乱，再用utf-8生成，即可解决乱码问题
+				System.out.println(new String(objectError.getDefaultMessage()
+						.getBytes("ISO-8859-1"), "UTF-8"));
 			}
-			//将错误信息传到页面
+			// 将错误信息传到页面
 			model.addAttribute("allErrors", allErrors);
-			return "/WEB-INF/jsp/items/editItems.jsp";
 		}
-		
+
+		// 处理上传的图片
+		// 原始名称
+		String originalFileName = items_pic.getOriginalFilename();
+		// 上传图片
+		if (items_pic != null && originalFileName != null && originalFileName.length() > 0) {
+			// 存储图片的物理路径
+			String pic_path = "E:\\github\\develop\\upload\\temp\\";
+			// 新的图片名称
+			String newFileName = UUID.randomUUID()
+					+ originalFileName.substring(originalFileName
+							.lastIndexOf("."));
+			// 新图片
+			File newFile = new File(pic_path + newFileName);
+			// 将内存中的数据写入磁盘
+			items_pic.transferTo(newFile);
+			// 将新图片名称写到itemsCustom中
+			itemsCustom.setPic(newFileName);
+		} else {
+			//如果用户没有选择图片就上传了，还用原来的图片
+			ItemsCustom temp = itemsService.findItemsById(itemsCustom.getId());
+			itemsCustom.setPic(temp.getPic());
+		}
+
 		// 调用service更新商品信息，页面需要将商品信息传到此方法
 		itemsService.updateItems(id, itemsCustom);
-				
+
 		// return "redirect:queryItems.action";
 		// return "forward:queryItems.action";
-		
+
 		return "/WEB-INF/jsp/success.jsp";
 	}
 
@@ -119,10 +148,11 @@ public class ItemsController {
 		return modelAndView;
 
 	}
-	
+
 	@RequestMapping("/editItemsQueryResult")
-	public String editItemsQueryResult(ItemsQueryVo itemsQueryVo) throws Exception {
-		//下面打个断点，进来后看看itemsQueryVo中的List<ItemsCustom>属性有没有正确接收参数
+	public String editItemsQueryResult(ItemsQueryVo itemsQueryVo)
+			throws Exception {
+		// 下面打个断点，进来后看看itemsQueryVo中的List<ItemsCustom>属性有没有正确接收参数
 		return "/WEB-INF/jsp/success.jsp";
 	}
 

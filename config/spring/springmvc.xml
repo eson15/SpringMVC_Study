@@ -111,7 +111,7 @@
 		<property name="cacheSeconds" value="120"/>
 	</bean>
 	
-	<!-- springmvc提供的简单异常处理器 -->
+	<!-- springmvc提供的简单异常处理器 
 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 		<property name="defaultErrorView" value="/WEB-INF/jsp/error.jsp"/>
 		<property name="exceptionAttribute" value="ex"/>
@@ -121,10 +121,15 @@
 			</props>
 		</property>
 	</bean>
+	-->
 	
 	<!-- 自定义的全局异常处理器
-	只要实现HandlerExceptionResolver接口就是全局异常处理器
+	只要实现HandlerExceptionResolver接口就是全局异常处理器 -->
 	<bean class="ssm.exception.CustomExceptionResolver"></bean>
-	 -->
-	
+	 
+	<!-- 文件上传 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 设置船上文件的最大尺寸为5MB -->
+		<property name="maxUploadSize" value="5242880"/>
+	</bean>
 </beans>
