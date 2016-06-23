@@ -68,8 +68,8 @@
 	如果使用mvc:annotation-driven不用配置上边的RequestMappingHandlerMapping和RequestMappingHandlerAdapter
 	实际开发时使用mvc:annotation-driven
 	 -->
-	<mvc:annotation-driven conversion-service="conversionService" 
-		validator="validator"></mvc:annotation-driven>
+	<mvc:annotation-driven conversion-service="conversionService" validator="validator">
+	</mvc:annotation-driven>
 	
 	<!-- 也不用配置具体的Controller了，直接使用这个进行扫描包即可，也可以扫描service -->
 	<context:component-scan base-package="ssm.controller"></context:component-scan>

@@ -12,8 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -176,6 +178,23 @@ public class ItemsController {
 			throws Exception {
 		// 下面打个断点，进来后看看itemsQueryVo中的List<ItemsCustom>属性有没有正确接收参数
 		return "/WEB-INF/jsp/success.jsp";
+	}
+	
+	//测试请求的是json串(商品信息)，输出json(商品信息)
+	//@RequestBody将请求的商品信息的json串转成itemsCustom对象
+	//@ResponseBody将itemsCustom对象转成json输出
+	@RequestMapping("/requestJson")
+	public @ResponseBody ItemsCustom requestJson(@RequestBody ItemsCustom itemsCustom) {
+		
+		return itemsCustom; //由于@ResponseBody注解，将itemsCustom转成json格式返回
+	}
+	
+	//测试请求的是key/value(商品信息)，输出json(商品信息)
+	//@ResponseBody将itemsCustom对象转成json输出
+	@RequestMapping("/responseJson")
+	public @ResponseBody ItemsCustom responseJson(ItemsCustom itemsCustom) {
+		
+		return itemsCustom; //由于@ResponseBody注解，将itemsCustom转成json格式返回
 	}
 
 }
