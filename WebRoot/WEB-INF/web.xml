@@ -52,5 +52,22 @@
 			第三种：/*，这样配置是不对的，使用这种配置，最重要转发到一个jsp页面时，仍然会由DispatcherServlet解析jsp地址， 不能根据jsp页面找打Handler，会报错 -->
 		<url-pattern>*.action</url-pattern>
 	</servlet-mapping>
+	
+	<!-- 配置springmvc的前端控制器DispatcherServlet，REST配置 -->
+	<servlet>
+		<servlet-name>springmvc_rest</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+
+		<!-- contextConfigLocation是配置springmvc加载的配置文件（配置处理器映射器、适配器等） 如果不配置contextConfigLocation，则默认加载的是/WEB-INF/springmvc-servlet.xml -->
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:spring/springmvc.xml</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>springmvc_rest</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
 
 </web-app>

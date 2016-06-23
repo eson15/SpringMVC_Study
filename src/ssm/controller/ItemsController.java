@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -196,5 +197,13 @@ public class ItemsController {
 		
 		return itemsCustom; //由于@ResponseBody注解，将itemsCustom转成json格式返回
 	}
+	
+	//查询商品信息，输出json，使用RESTful
+	@RequestMapping("/itemsView/{id}")
+	public @ResponseBody ItemsCustom itemsView(@PathVariable("id") Integer id) throws Exception {
+		ItemsCustom itemsCustom = itemsService.findItemsById(id);
+		return itemsCustom;
+	}
+	
 
 }

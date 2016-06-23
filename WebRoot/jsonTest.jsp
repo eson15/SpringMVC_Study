@@ -24,8 +24,7 @@ function requestJson(){
 			alert(data.name);
 		}
 		
-	});
-	
+	});	
 	
 }
 //请求key/value，输出是json
