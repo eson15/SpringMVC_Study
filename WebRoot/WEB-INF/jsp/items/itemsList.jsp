@@ -19,6 +19,9 @@ function deleteItems() {
 </script>
 </head>
 <body>
+	<c:if test="${username != null }">
+		${username } <a href="${pageContext.request.contextPath }/logout.action">退出</a>
+	</c:if>
 	<form name="itemsForm"
 		action="${pageContext.request.contextPath }/editItemsAllSubmit.action"
 		method="post">

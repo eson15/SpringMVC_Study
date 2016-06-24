@@ -137,4 +137,26 @@
 	<!-- 静态资源解析，包括js,css,img... -->
 	<mvc:resources location="/js/" mapping="/js/**"></mvc:resources>
 	<mvc:resources location="/img/" mapping="/img/**"></mvc:resources>
+	
+	<!-- 配置拦截器 -->
+	<mvc:interceptors>
+		<!-- 多个拦截器，按顺序执行 -->
+		
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/> <!-- 拦截所有的url包括子url路径 -->
+			<bean class="ssm.interceptor.LoginInterceptor"/>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/> <!-- 拦截所有的url包括子url路径 -->
+			<bean class="ssm.interceptor.HandlerInterceptor1"/>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<bean class="ssm.interceptor.HandlerInterceptor2"/>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<bean class="ssm.interceptor.HandlerInterceptor3"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
 </beans>

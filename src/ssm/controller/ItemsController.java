@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -205,5 +206,24 @@ public class ItemsController {
 		return itemsCustom;
 	}
 	
-
+	//登陆
+	@RequestMapping("/login")
+	public String login(HttpServletRequest request, String username, String password) throws Exception {
+		
+		//实际中要去和数据库匹配的
+		//....
+		HttpSession session = request.getSession();
+		session.setAttribute("username", username);
+		return "redirect:queryItems.action";
+	}
+	
+	//退出
+	@RequestMapping("/logout")
+	public String logout(HttpServletRequest request) throws Exception {
+		
+		
+		HttpSession session = request.getSession();
+		session.invalidate();
+		return "redirect:queryItems.action";
+	}
 }
